@@ -13,50 +13,53 @@ import org.json.JSONObject;
 
 public class LeagueGame {
     
-    String state;
-    String season;
-    String round1WarTag1;
-    String round1WarTag2;
-    String round1WarTag3;
-    String round1WarTag4;
-    String round2WarTag1;
-    String round2WarTag2;
-    String round2WarTag3;
-    String round2WarTag4;
-    String round3WarTag1;
-    String round3WarTag2;
-    String round3WarTag3;
-    String round3WarTag4;
-    String round4WarTag1;
-    String round4WarTag2;
-    String round4WarTag3;
-    String round4WarTag4;
-    String round5WarTag1;
-    String round5WarTag2;
-    String round5WarTag3;
-    String round5WarTag4;
-    String round6WarTag1;
-    String round6WarTag2;
-    String round6WarTag3;
-    String round6WarTag4;
-    String round7WarTag1;
-    String round7WarTag2;
-    String round7WarTag3;
-    String round7WarTag4;
-    ArrayList<String> round1TagArray = new ArrayList();
-    ArrayList<String> round2TagArray = new ArrayList();
-    ArrayList<String> round3TagArray = new ArrayList();
-    ArrayList<String> round4TagArray = new ArrayList();
-    ArrayList<String> round5TagArray = new ArrayList();
-    ArrayList<String> round6TagArray = new ArrayList();
-    ArrayList<String> round7TagArray = new ArrayList();
-    LeagueWar round1 = new LeagueWar();
-    LeagueWar round2 = new LeagueWar();
-    LeagueWar round3 = new LeagueWar();
-    LeagueWar round4 = new LeagueWar();
-    LeagueWar round5 = new LeagueWar();
-    LeagueWar round6 = new LeagueWar();
-    LeagueWar round7 = new LeagueWar();
+    private String state;
+    private String season;
+    private String round1WarTag1;
+    private String round1WarTag2;
+    private String round1WarTag3;
+    private String round1WarTag4;
+    private String round2WarTag1;
+    private String round2WarTag2;
+    private String round2WarTag3;
+    private String round2WarTag4;
+    private String round3WarTag1;
+    private String round3WarTag2;
+    private String round3WarTag3;
+    private String round3WarTag4;
+    private String round4WarTag1;
+    private String round4WarTag2;
+    private String round4WarTag3;
+    private String round4WarTag4;
+    private String round5WarTag1;
+    private String round5WarTag2;
+    private String round5WarTag3;
+    private String round5WarTag4;
+    private String round6WarTag1;
+    private String round6WarTag2;
+    private String round6WarTag3;
+    private String round6WarTag4;
+    private String round7WarTag1;
+    private String round7WarTag2;
+    private String round7WarTag3;
+    private String round7WarTag4;
+    private ArrayList<String> round1TagArray = new ArrayList();
+    private ArrayList<String> round2TagArray = new ArrayList();
+    private ArrayList<String> round3TagArray = new ArrayList();
+    private ArrayList<String> round4TagArray = new ArrayList();
+    private ArrayList<String> round5TagArray = new ArrayList();
+    private ArrayList<String> round6TagArray = new ArrayList();
+    private ArrayList<String> round7TagArray = new ArrayList();
+    
+    
+    private LeagueWar round1 = new LeagueWar();
+    private LeagueWar round2 = new LeagueWar();
+    private LeagueWar round3 = new LeagueWar();
+    private LeagueWar round4 = new LeagueWar();
+    private LeagueWar round5 = new LeagueWar();
+    private LeagueWar round6 = new LeagueWar();
+    private LeagueWar round7 = new LeagueWar();
+    private ArrayList<LeagueWar> roundList = new ArrayList();
     
     
     LeagueGame(String tag) throws IOException, ClashException{
@@ -132,60 +135,66 @@ public class LeagueGame {
         if (!round1WarTag1.equalsIgnoreCase("#0")){
             for (int i = 0; i < round1TagArray.size(); i++){
                 LeagueWar temp = new LeagueWar(round1TagArray.get(i));
-                if ((temp.clan1Tag.equalsIgnoreCase(tag) || temp.clan2Tag.equalsIgnoreCase(tag))){
+                if ((temp.getClan1Tag().equalsIgnoreCase(tag) || temp.getClan2Tag().equalsIgnoreCase(tag))){
                     round1 = temp;
+                    roundList.add(round1);
                 }
             }
         }
         if (!round2WarTag1.equalsIgnoreCase("#0")){
             for (int i = 0; i < round2TagArray.size(); i++){
                 LeagueWar temp = new LeagueWar(round2TagArray.get(i));
-                if ((temp.clan1Tag.equalsIgnoreCase(tag) || temp.clan2Tag.equalsIgnoreCase(tag))){
+                if ((temp.getClan1Tag().equalsIgnoreCase(tag) || temp.getClan2Tag().equalsIgnoreCase(tag))){
                     round2 = temp;
+                    roundList.add(round2);
                 }
             }
         }
         if (!round3WarTag1.equalsIgnoreCase("#0")){
             for (int i = 0; i < round3TagArray.size(); i++){
                 LeagueWar temp = new LeagueWar(round3TagArray.get(i));
-                if ((temp.clan1Tag.equalsIgnoreCase(tag) || temp.clan2Tag.equalsIgnoreCase(tag))){
+                if ((temp.getClan1Tag().equalsIgnoreCase(tag) || temp.getClan2Tag().equalsIgnoreCase(tag))){
                     round3 = temp;
+                    roundList.add(round3);
                 }
             }
         }
         if (!round4WarTag1.equalsIgnoreCase("#0")){
             for (int i = 0; i < round4TagArray.size(); i++){
                 LeagueWar temp = new LeagueWar(round4TagArray.get(i));
-                if ((temp.clan1Tag.equalsIgnoreCase(tag) || temp.clan2Tag.equalsIgnoreCase(tag))){
+                if ((temp.getClan1Tag().equalsIgnoreCase(tag) || temp.getClan2Tag().equalsIgnoreCase(tag))){
                     round4 = temp;
+                    roundList.add(round4);
                 }
             }
         }
         if (!round5WarTag1.equalsIgnoreCase("#0")){
             for (int i = 0; i < round5TagArray.size(); i++){
                 LeagueWar temp = new LeagueWar(round5TagArray.get(i));
-                if ((temp.clan1Tag.equalsIgnoreCase(tag) || temp.clan2Tag.equalsIgnoreCase(tag))){
+                if ((temp.getClan1Tag().equalsIgnoreCase(tag) || temp.getClan2Tag().equalsIgnoreCase(tag))){
                     round5 = temp;
+                    roundList.add(round5);
                 }
             }
         }
         if (!round6WarTag1.equalsIgnoreCase("#0")){
             for (int i = 0; i < round6TagArray.size(); i++){
                 LeagueWar temp = new LeagueWar(round6TagArray.get(i));
-                if ((temp.clan1Tag.equalsIgnoreCase(tag) || temp.clan2Tag.equalsIgnoreCase(tag))){
+                if ((temp.getClan1Tag().equalsIgnoreCase(tag) || temp.getClan2Tag().equalsIgnoreCase(tag))){
                     round6 = temp;
+                    roundList.add(round6);
                 }
             }
         }
         if (!round7WarTag1.equalsIgnoreCase("#0")){
             for (int i = 0; i < round7TagArray.size(); i++){
                 LeagueWar temp = new LeagueWar(round7TagArray.get(i));
-                if ((temp.clan1Tag.equalsIgnoreCase(tag) || temp.clan2Tag.equalsIgnoreCase(tag))){
+                if ((temp.getClan1Tag().equalsIgnoreCase(tag) || temp.getClan2Tag().equalsIgnoreCase(tag))){
                     round7 = temp;
+                    roundList.add(round7);
                 }
             }
         }
-        
     }
     catch(Exceptions.NotFoundException ex){
         System.out.println("No League Game Available at this time");
@@ -218,6 +227,10 @@ public class LeagueGame {
     
     public LeagueWar getRound7(){
         return round7;
+    }
+    
+    public ArrayList getRoundList(){
+        return roundList;
     }
     
     @Override
