@@ -9,20 +9,17 @@ import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- *
- * @author SchoolBox
- */
+
 public class LeagueWarMember {
     
-    String tag;
-    String name;
-    String team;
-    int townHallLevel;
-    int mapPosition;
-    ArrayList<Attack> attacks = new ArrayList();
-    int opponentAttacks;
-    Attack bestOpponentAttacks;
+    private String tag;
+    private String name;
+    private String team;
+    private int townHallLevel;
+    private int mapPosition;
+    private ArrayList<Attack> attacks = new ArrayList();
+    private int opponentAttacks;
+    private Attack bestOpponentAttacks;
     
     
     // This will be initiated automatically when creating a LeagueWar or LeagueGame
@@ -46,7 +43,6 @@ public class LeagueWarMember {
                 attacks.add(new Attack(data.getJSONArray("attacks").getJSONObject(i)));
             }
             catch(JSONException ex){
-                //System.out.println("SHIT");
                 attacks.add(new Attack());
             }
         }
@@ -65,11 +61,11 @@ public class LeagueWarMember {
         else{
             team = "Away";
         }
-        
-        
-        
     }
     
+    
+    
+    @Override
     public String toString(){
         String temp =
         "Tag: " + tag + "\n" +
@@ -82,5 +78,37 @@ public class LeagueWarMember {
         "Best Opponent Attack: \n" + bestOpponentAttacks.toString() + "\n";
 
         return temp;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTeam() {
+        return team;
+    }
+
+    public int getTownHallLevel() {
+        return townHallLevel;
+    }
+
+    public int getMapPosition() {
+        return mapPosition;
+    }
+
+    public ArrayList<Attack> getAttacks() {
+        return attacks;
+    }
+
+    public int getOpponentAttacks() {
+        return opponentAttacks;
+    }
+
+    public Attack getBestOpponentAttacks() {
+        return bestOpponentAttacks;
     }
 }

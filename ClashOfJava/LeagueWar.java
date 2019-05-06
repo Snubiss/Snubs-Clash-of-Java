@@ -13,26 +13,26 @@ import org.json.JSONObject;
 
 public class LeagueWar {
     
-    JSONObject data;
-    String state;
-    int teamSize;
-    String preparationStartTime;
-    String startTime;
-    String endTime;
-    String clan1Tag;
-    String clan1Name;
-    int clan1Level;
-    int clan1Attacks;
-    int clan1Stars;
-    int clan1Destruction;
-    ArrayList<LeagueWarMember> clan1Members = new ArrayList();
-    String clan2Tag;
-    String clan2Name;
-    int clan2Level;
-    int clan2Attacks;
-    int clan2Stars;
-    int clan2Destruction;
-    ArrayList<LeagueWarMember> clan2Members = new ArrayList();
+    private JSONObject data;
+    private String state;
+    private int teamSize;
+    private String preparationStartTime;
+    private String startTime;
+    private String endTime;
+    private String clan1Tag;
+    private String clan1Name;
+    private int clan1Level;
+    private int clan1Attacks;
+    private int clan1Stars;
+    private int clan1Destruction;
+    private ArrayList<LeagueWarMember> clan1Members = new ArrayList();
+    private String clan2Tag;
+    private String clan2Name;
+    private int clan2Level;
+    private int clan2Attacks;
+    private int clan2Stars;
+    private int clan2Destruction;
+    private ArrayList<LeagueWarMember> clan2Members = new ArrayList();
     
     LeagueWar(){
         
@@ -66,7 +66,83 @@ public class LeagueWar {
         for (int i = 0; i < data.getJSONObject("opponent").getJSONArray("members").length(); i++){
             clan2Members.add(new LeagueWarMember(data.getJSONObject("opponent").getJSONArray("members").getJSONObject(i),2));
         }
-        
+    }
+    
+    
+    public String getState() {
+        return state;
+    }
+
+    public int getTeamSize() {
+        return teamSize;
+    }
+
+    public String getPreparationStartTime() {
+        return preparationStartTime;
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public String getClan1Tag() {
+        return clan1Tag;
+    }
+
+    public String getClan1Name() {
+        return clan1Name;
+    }
+
+    public int getClan1Level() {
+        return clan1Level;
+    }
+
+    public int getClan1Attacks() {
+        return clan1Attacks;
+    }
+
+    public int getClan1Stars() {
+        return clan1Stars;
+    }
+
+    public int getClan1Destruction() {
+        return clan1Destruction;
+    }
+
+    public ArrayList<LeagueWarMember> getClan1Members() {
+        return clan1Members;
+    }
+
+    public String getClan2Tag() {
+        return clan2Tag;
+    }
+
+    public String getClan2Name() {
+        return clan2Name;
+    }
+
+    public int getClan2Level() {
+        return clan2Level;
+    }
+
+    public int getClan2Attacks() {
+        return clan2Attacks;
+    }
+
+    public int getClan2Stars() {
+        return clan2Stars;
+    }
+
+    public int getClan2Destruction() {
+        return clan2Destruction;
+    }
+
+    public ArrayList<LeagueWarMember> getClan2Members() {
+        return clan2Members;
     }
     
     @Override
