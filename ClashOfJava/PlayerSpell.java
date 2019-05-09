@@ -1,8 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/********************************************************************
+//  PlayerSpell.java       Author: Snubiss
+//
+//  Date: April 28, 2019
+//  Modified: May 8, 2019
+//
+//  The PlayerSpell class is used to define instance data for a player's
+//  spells. This class is called directly from the Player class. This
+//  class should not be instantiated directly.
+//
+//********************************************************************/
+
 package ClashOfJava;
 
 import org.json.JSONObject;
@@ -41,6 +48,7 @@ public class PlayerSpell {
     
     @Override
     public String toString(){
+        
         String temp =
         "Village: " + village + "\n" +
         "Name: " + name + "\n" +

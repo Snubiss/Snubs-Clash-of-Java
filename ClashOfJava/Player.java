@@ -1,17 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/********************************************************************
+//  Player.java       Author: Snubiss
+//
+//  Date: April 28, 2019
+//  Modified: May 8, 2019
+//
+//  The Player class is used to define all instance data for a 'Clash
+//  of Clans' player search query JSON object. This class is used to 
+//  perform various player queries against the Clash of Clash API. This
+//  class instantiates the playerAchievement, playerHero, playerSpell and
+//  playerTroop classes to create lists of the player's data. The
+//  results of the query will be returned as a 'Player' object. 
+//
+//********************************************************************/
+
 package ClashOfJava;
 
 import Exceptions.ClashException;
 import java.io.IOException;
 import java.util.ArrayList;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class Player {
+public abstract class Player {
     
     private JSONObject data;
     private String tag;
@@ -54,26 +65,38 @@ public class Player {
             tag = data.getString("tag");
             name = data.getString("name");
             expLevel = data.getInt("expLevel");
-            leagueID = data.getJSONObject("league").getInt("id");
-            leagueName = data.getJSONObject("league").getString("name");
-            leagueIconSmall = data.getJSONObject("league").getJSONObject("iconUrls").getString("tiny");
-            leagueIconMedium = data.getJSONObject("league").getJSONObject("iconUrls").getString("small");
-            leagueIconLarge = data.getJSONObject("league").getJSONObject("iconUrls").getString("medium");
+            
+            try{
+                leagueID = data.getJSONObject("league").optInt("id", 0);
+                leagueName = data.optJSONObject("league").getString("name");
+                leagueIconSmall = data.optJSONObject("league").getJSONObject("iconUrls").getString("tiny");
+                leagueIconMedium = data.optJSONObject("league").getJSONObject("iconUrls").getString("small");
+                leagueIconLarge = data.optJSONObject("league").getJSONObject("iconUrls").getString("medium");
+            }
+            catch(JSONException ex){
+            }
             trophies = data.getInt("trophies");
             versusTrophies = data.getInt("versusTrophies");
             attackWins = data.getInt("attackWins");
             defenseWins = data.getInt("defenseWins");
-            clanTag = data.getJSONObject("clan").getString("tag");
-            clanName = data.getJSONObject("clan").getString("name");
-            clanLevel = data.getJSONObject("clan").getInt("clanLevel");
-            clanIconSmall = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("small");
-            clanIconMedium = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("medium");
-            clanIconLarge = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("large");
+            
+            try{
+                clanTag = data.getJSONObject("clan").getString("tag");
+                clanName = data.getJSONObject("clan").getString("name");
+                clanLevel = data.getJSONObject("clan").getInt("clanLevel");
+                clanIconSmall = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("small");
+                clanIconMedium = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("medium");
+                clanIconLarge = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("large");
+                role = data.getString("role");
+            }
+            catch(JSONException ex){
+            }
+            
             bestTrophies = data.getInt("bestTrophies");
             donations = data.getInt("donations");
             donationsReceived = data.getInt("donationsReceived");
             warStars = data.getInt("warStars");
-            role = data.getString("role");
+            
             townHallLevel = data.getInt("townHallLevel");
             builderHallLevel = data.getInt("builderHallLevel");
             bestVersusTrophies = data.getInt("bestVersusTrophies");
@@ -101,7 +124,7 @@ public class Player {
             
         }
         catch (Exceptions.NotFoundException ex){
-            System.out.println("oops! Something went wrong!");
+            System.out.println("Player does not exist. Please check the player ID entered.");
         }
     }
     
@@ -229,6 +252,7 @@ public class Player {
         return spells;
     }
     
+    @Override
     public String toString(){
         
         String temp =

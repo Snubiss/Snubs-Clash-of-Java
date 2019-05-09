@@ -1,13 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/********************************************************************
+//  LeagueWar.java       Author: Snubiss
+//
+//  Date: April 25, 2019
+//  Modified: May 8, 2019
+//
+//  The LeagueWar class is used to define all instance data for a 'Clash
+//  of Clans' league game war JSON object. This class is instantiated through
+//  the LeagueGame class. This class should not be instantiated directly.
+//
+//********************************************************************/
+
 package ClashOfJava;
 
 import Exceptions.ClashException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONObject;
 
 
@@ -16,23 +28,23 @@ public class LeagueWar {
     private JSONObject data;
     private String state;
     private int teamSize;
-    private String preparationStartTime;
-    private String startTime;
-    private String endTime;
+    private Date preparationStartTime;
+    private Date startTime;
+    private Date endTime;
     private String clan1Tag;
     private String clan1Name;
     private int clan1Level;
     private int clan1Attacks;
     private int clan1Stars;
     private int clan1Destruction;
-    private ArrayList<LeagueWarMember> clan1Members = new ArrayList();
+    private final ArrayList<WarMember> clan1Members = new ArrayList();
     private String clan2Tag;
     private String clan2Name;
     private int clan2Level;
     private int clan2Attacks;
     private int clan2Stars;
     private int clan2Destruction;
-    private ArrayList<LeagueWarMember> clan2Members = new ArrayList();
+    private final ArrayList<WarMember> clan2Members = new ArrayList();
     
     LeagueWar(){
         
@@ -43,9 +55,6 @@ public class LeagueWar {
         data = API.performAPIRequest("clanwarleagues/wars/%s", warTag);
         state = data.getString("state");
         teamSize = data.getInt("teamSize");
-        preparationStartTime = data.getString("preparationStartTime");
-        startTime = data.getString("startTime");
-        endTime = data.getString("endTime");
         clan1Tag = data.getJSONObject("clan").getString("tag");
         clan1Name = data.getJSONObject("clan").getString("name");
         clan1Level = data.getJSONObject("clan").getInt("clanLevel");
@@ -59,12 +68,24 @@ public class LeagueWar {
         clan2Stars = data.getJSONObject("opponent").getInt("stars");
         clan2Destruction = data.getJSONObject("opponent").getInt("destructionPercentage");
         
+        // Convert the clash of clans date to a more suitable date format.
+        SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmss.SSS'Z'");
+
+        try {
+            preparationStartTime = df.parse(data.getString("preparationStartTime"));
+            startTime = df.parse(data.getString("startTime"));
+            endTime = df.parse(data.getString("endTime"));
+
+        } catch (ParseException ex) {
+            Logger.getLogger(ClanWar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
         for (int i = 0; i < data.getJSONObject("clan").getJSONArray("members").length(); i++){
-            clan1Members.add(new LeagueWarMember(data.getJSONObject("clan").getJSONArray("members").getJSONObject(i),1));
+            clan1Members.add(new WarMember(data.getJSONObject("clan").getJSONArray("members").getJSONObject(i),1));
         }
         
         for (int i = 0; i < data.getJSONObject("opponent").getJSONArray("members").length(); i++){
-            clan2Members.add(new LeagueWarMember(data.getJSONObject("opponent").getJSONArray("members").getJSONObject(i),2));
+            clan2Members.add(new WarMember(data.getJSONObject("opponent").getJSONArray("members").getJSONObject(i),2));
         }
     }
     
@@ -77,15 +98,15 @@ public class LeagueWar {
         return teamSize;
     }
 
-    public String getPreparationStartTime() {
+    public Date getPreparationStartTime() {
         return preparationStartTime;
     }
 
-    public String getStartTime() {
+    public Date getStartTime() {
         return startTime;
     }
 
-    public String getEndTime() {
+    public Date getEndTime() {
         return endTime;
     }
 
@@ -113,7 +134,7 @@ public class LeagueWar {
         return clan1Destruction;
     }
 
-    public ArrayList<LeagueWarMember> getClan1Members() {
+    public ArrayList<WarMember> getClan1Members() {
         return clan1Members;
     }
 
@@ -141,7 +162,7 @@ public class LeagueWar {
         return clan2Destruction;
     }
 
-    public ArrayList<LeagueWarMember> getClan2Members() {
+    public ArrayList<WarMember> getClan2Members() {
         return clan2Members;
     }
     

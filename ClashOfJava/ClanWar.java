@@ -1,90 +1,232 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/********************************************************************
+//  ClanWar.java       Author: Snubiss
+//
+//  Date: April 28, 2019
+//  Modified: May 8, 2019
+//
+//  The ClanWar class is used to define all instance data for a 'Clash
+//  of Clans' clan war JSON object.
+//
+//********************************************************************/
+
 package ClashOfJava;
 
 import Exceptions.ClashException;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.JSONObject;
 
 
 public class ClanWar {
     
     JSONObject data;
-    String state;
-    int teamSize;
-    String preparationStartTime;
-    String startTime;
-    String endTime;
-    String clan1Tag;
-    String clan1Name;
-    int clan1Level;
-    int clan1Attacks;
-    int clan1Stars;
-    int clan1Destruction;
-    ArrayList<ClanMember> clan1Members = new ArrayList();
-    String clan2Tag;
-    String clan2Name;
-    int clan2Level;
-    int clan2Attacks;
-    int clan2Stars;
-    int clan2Destruction;
-    ArrayList<ClanMember> clan2Members = new ArrayList();
+    
+    private Date warPreparationStartTime;
+    private Date warStartTime;
+    private Date warEndTime;
+    private String warState;
+    private int warTeamSize;
+    
+    private String clanName;
+    private String clanTag;
+    private String clanIconSmall;
+    private String clanIconMedium;
+    private String clanIconLarge;
+    private int clanDestructionPercentage;
+    private int clanAttacks;
+    private int clanLevel;
+    private int clanStars;
+    private ArrayList<WarMember> clanMembers = new ArrayList();
+    
+    private String opponentClanName;
+    private String opponentClanTag;
+    private String opponentClanIconSmall;
+    private String opponentClanIconMedium;
+    private String opponentClanIconLarge;
+    private int opponentClanDestructionPercentage;
+    private int opponentClanAttacks;
+    private int opponentClanLevel;
+    private int opponentClanStars;
+    private ArrayList<WarMember> opponentClanMembers = new ArrayList();
     
     
-    ClanWar(String tag) throws IOException, ClashException{
     
-        data = API.performAPIRequest("clans/%s/currentwar", tag);
-        //System.out.println(data.getJSONObject("clan"));
-        state = data.getString("state");
-        //teamSize = data.getInt("teamSize");
-        //preparationStartTime = data.getString("preparationStartTime");
-        //startTime = data.getString("startTime");
-        //endTime = data.getString("endTime");
-        //clan1Tag = data.getJSONObject("clan").getString("tag");
-        //clan1Name = data.getJSONObject("clan").getString("name");
-        clan1Level = data.getJSONObject("clan").getInt("clanLevel");
-        clan1Attacks = data.getJSONObject("clan").getInt("attacks");
-        clan1Stars = data.getJSONObject("clan").getInt("stars");
-        clan1Destruction = data.getJSONObject("clan").getInt("destructionPercentage");
-        //clan2Tag = data.getJSONObject("opponent").getString("tag");
-        //clan2Name = data.getJSONObject("opponent").getString("name");
-        clan2Level = data.getJSONObject("opponent").getInt("clanLevel");
-        clan2Attacks = data.getJSONObject("opponent").getInt("attacks");
-        clan2Stars = data.getJSONObject("opponent").getInt("stars");
-        clan2Destruction = data.getJSONObject("opponent").getInt("destructionPercentage");
+    
+    
+    ClanWar(String clanTagData) throws IOException, ClashException{
         
-        /*for (int i = 0; i < data.getJSONObject("clan").getJSONArray("members").length(); i++){
-            clan1Members.add(new ClanMember(data.getJSONObject("clan").getJSONArray("members").getJSONObject(i)));
-        }
+        data = API.performAPIRequest("clans/%s/currentwar", clanTagData);
         
-        for (int i = 0; i < data.getJSONObject("opponent").getJSONArray("members").length(); i++){
-            clan2Members.add(new ClanMember(data.getJSONObject("opponent").getJSONArray("members").getJSONObject(i)));
-        }*/
+        warState = data.getString("state");
+        clanDestructionPercentage = data.getJSONObject("clan").getInt("destructionPercentage");
+        clanAttacks = data.getJSONObject("clan").getInt("attacks");
+        clanLevel = data.getJSONObject("clan").getInt("clanLevel");
+        clanStars = data.getJSONObject("clan").getInt("stars");
+        clanIconSmall = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("small");
+        clanIconMedium = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("medium");
+        clanIconLarge = data.getJSONObject("clan").getJSONObject("badgeUrls").getString("large");
+        opponentClanDestructionPercentage = data.getJSONObject("opponent").getInt("destructionPercentage");
+        opponentClanAttacks = data.getJSONObject("opponent").getInt("attacks");
+        opponentClanLevel = data.getJSONObject("opponent").getInt("clanLevel");
+        opponentClanStars = data.getJSONObject("opponent").getInt("stars");
+        opponentClanIconSmall = data.getJSONObject("opponent").getJSONObject("badgeUrls").getString("small");
+        opponentClanIconMedium = data.getJSONObject("opponent").getJSONObject("badgeUrls").getString("medium");
+        opponentClanIconLarge = data.getJSONObject("opponent").getJSONObject("badgeUrls").getString("large");
+        
+        
+        // Check for active War
+        if (!warState.contains("notInWar")){
+            // Convert the clash of clans date to a more suitable date format.
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmss.SSS'Z'");
+
+            try {
+                warPreparationStartTime = df.parse(data.getString("preparationStartTime"));
+                warStartTime = df.parse(data.getString("startTime"));
+                warEndTime = df.parse(data.getString("endTime"));
+
+            } catch (ParseException ex) {
+                Logger.getLogger(ClanWar.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+            warTeamSize = data.getInt("teamSize");
+            clanName = data.getJSONObject("clan").getString("name");
+            clanTag = data.getJSONObject("clan").getString("tag");
+            opponentClanName = data.getJSONObject("opponent").getString("name");
+            opponentClanTag = data.getJSONObject("opponent").getString("tag");
+            
+            
+            for (int i = 0; i < warTeamSize; i++){
+                clanMembers.add(new WarMember(data.getJSONObject("clan").getJSONArray("members").getJSONObject(i),1));
+                opponentClanMembers.add(new WarMember(data.getJSONObject("opponent").getJSONArray("members").getJSONObject(i),0));
+            }
+        }// End Active War Found
     }
     
+    
+    public Date getWarPreparationStartTime() {
+        return warPreparationStartTime;
+    }
+
+    public Date getWarStartTime() {
+        return warStartTime;
+    }
+
+    public Date getWarEndTime() {
+        return warEndTime;
+    }
+
+    public String getWarState() {
+        return warState;
+    }
+
+    public int getWarTeamSize() {
+        return warTeamSize;
+    }
+
+    public String getClanName() {
+        return clanName;
+    }
+
+    public String getClanTag() {
+        return clanTag;
+    }
+
+    public String getClanIconSmall() {
+        return clanIconSmall;
+    }
+
+    public String getClanIconMedium() {
+        return clanIconMedium;
+    }
+
+    public String getClanIconLarge() {
+        return clanIconLarge;
+    }
+
+    public int getClanDestructionPercentage() {
+        return clanDestructionPercentage;
+    }
+
+    public int getClanAttacks() {
+        return clanAttacks;
+    }
+
+    public int getClanLevel() {
+        return clanLevel;
+    }
+
+    public int getClanStars() {
+        return clanStars;
+    }
+
+    public ArrayList<WarMember> getClanMembers() {
+        return clanMembers;
+    }
+
+    public String getOpponentClanName() {
+        return opponentClanName;
+    }
+
+    public String getOpponentClanTag() {
+        return opponentClanTag;
+    }
+
+    public String getOpponentClanIconSmall() {
+        return opponentClanIconSmall;
+    }
+
+    public String getOpponentClanIconMedium() {
+        return opponentClanIconMedium;
+    }
+
+    public String getOpponentClanIconLarge() {
+        return opponentClanIconLarge;
+    }
+
+    public int getOpponentClanDestructionPercentage() {
+        return opponentClanDestructionPercentage;
+    }
+
+    public int getOpponentClanAttacks() {
+        return opponentClanAttacks;
+    }
+
+    public int getOpponentClanLevel() {
+        return opponentClanLevel;
+    }
+
+    public int getOpponentClanStars() {
+        return opponentClanStars;
+    }
+
+    public ArrayList<WarMember> getOpponentClanMembers() {
+        return opponentClanMembers;
+    }
+    
+    @Override
     public String toString(){
         String temp =
-        "State: " + state + "\n" +
-        "Team Size: " + teamSize + "\n" +
-        "Prep Start Time: " + preparationStartTime + "\n" +
-        "Start Time: " + startTime + "\n" +
-        "End Time: " + endTime + "\n" +
-        "Clan 1 Tag: " + clan1Tag + "\n" +
-        "Clan 1 Name: " + clan1Name + "\n" +
-        "Clan 1 Level: " + clan1Level + "\n" +
-        "Clan 1 Attacks: " + clan1Attacks + "\n" +
-        "Clan 1 Stars: " + clan1Stars + "\n" +
-        "Clan 1 Destruction: " + clan1Destruction + "\n\n" +
-        "Clan 2 Tag: " + clan2Tag + "\n" +
-        "Clan 2 Name: " + clan2Name + "\n" +
-        "Clan 2 Level: " + clan2Level + "\n" +
-        "Clan 2 Attacks: " + clan2Attacks + "\n" +
-        "Clan 2 Stars: " + clan2Stars + "\n" +
-        "Clan 2 Destruction: " + clan2Destruction + "\n";
+        "War Prep Start Time: " + warPreparationStartTime + "\n" +
+        "War Start Time: " + warStartTime + "\n" +
+        "War End Time: " + warEndTime + "\n" +
+        "War State: " + warState + "\n" +
+        "War Team Size: " + warTeamSize + "\n" +
+        "Clan Name: " + clanName + "\n" +
+        "Clan Tag: " + clanTag + "\n" +
+        "Clan Icon Small: " + clanIconSmall + "\n" +
+        "Clan Icon Medium: " + clanIconMedium + "\n" +
+        "Clan Icon Large: " + clanIconLarge + "\n" +
+        "Clan Destruction Percentage: " + clanDestructionPercentage + "\n" +
+        "Clan Attacks: " + clanAttacks + "\n" +
+        "Clan Level: " + clanLevel + "\n" +
+        "Clan Stars: " + clanStars + "\n";
+        
         return temp;
     }
 }
