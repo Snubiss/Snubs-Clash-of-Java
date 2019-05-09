@@ -1,8 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/********************************************************************
+//  LeagueGame.java       Author: Snubiss
+//
+//  Date: April 25, 2019
+//  Modified: May 8, 2019
+//
+//  The LeagueGame class is used to define all instance data for a 'Clash
+//  of Clans' league game JSON object.
+//
+//********************************************************************/
+
 package ClashOfJava;
 
 import Exceptions.ClashException;

@@ -1,22 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+/********************************************************************
+//  Attack.java       Author: Snubiss
+//
+//  Date: April 28, 2019
+//  Modified: May 8, 2019
+//
+//  The Attack class is used to define instance data for war attacks.
+//  This class is called directly from the warMember class.
+//
+//********************************************************************/
+
 package ClashOfJava;
 
 import org.json.JSONObject;
 
-/**
- *
- * @author SchoolBox
- */
 public class Attack {
-    String attackerTag;
-    String defenderTag;
-    int stars;
-    int destructionPercentage;
-    int order;
+    private final String attackerTag;
+    private final String defenderTag;
+    private final int stars;
+    private final int destructionPercentage;
+    private final int order;
     
     
     Attack(){
@@ -30,19 +32,39 @@ public class Attack {
     
     Attack(JSONObject data){
         
-        attackerTag = data.getString("attackerTag");
-        defenderTag = data.getString("defenderTag");
-        stars = data.getInt("stars");
-        destructionPercentage = data.getInt("destructionPercentage");
-        order = data.getInt("order");
-        
+        attackerTag = data.optString("attackerTag");
+        defenderTag = data.optString("defenderTag");
+        stars = data.optInt("stars");
+        destructionPercentage = data.optInt("destructionPercentage");
+        order = data.optInt("order");
+    }
+    
+    
+    public String getAttackerTag() {
+        return attackerTag;
+    }
+
+    public String getDefenderTag() {
+        return defenderTag;
+    }
+
+    public int getStars() {
+        return stars;
+    }
+
+    public int getDestructionPercentage() {
+        return destructionPercentage;
+    }
+
+    public int getOrder() {
+        return order;
     }
     
     @Override
     public String toString(){
         
         String temp =
-        "\nAttacker Tag: " + attackerTag + "\n" +
+        "Attacker Tag: " + attackerTag + "\n" +
         "Defender Tag: " + defenderTag + "\n" +
         "Stars: " + stars + "\n" +
         "Destruction Percentage: " + destructionPercentage + "%" + "\n" +
